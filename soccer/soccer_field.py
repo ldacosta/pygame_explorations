@@ -1,76 +1,62 @@
-import pygame
-from pygame import Rect
-from pygame.colordict import THECOLORS
-from pygame import QUIT
-import sys
-from util.entity import MovingEntity
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from pygame import Rect # TODO: we have to get rid of this
+from pygame.color import THECOLORS # TODO: we have to get rid of this
+
+from soccer import Global
+from soccer.soccer_ball import SoccerBall
+from soccer.soccer_goal import SoccerGoal
+from soccer.soccer_region import SoccerRegion
+from soccer.soccer_team import SoccerTeam
+from soccer.Wall2d import Wall2d
 from vector import Vec2d
 
-TOP_LEFT = (50, 50)
-WIDTH_HEIGHT = (1050, 720)
-
-class SoccerBall(MovingEntity):
-
-    def __init__(self, pos: Vec2d, size: float, mass: float, velocity: float, soccer_field):
-        super().__init__(
-            pos=pos,
-            radius=size,
-            velocity=velocity,
-            max_speed=velocity,
-            heading=Vec2d(soccer_field.playing_area.center),
-            mass=mass)
-
-    def kick(self, direction: Vec2d, force: Vec2d):
-
-        direction = direction.normalized()
-        acceleration = (direction * force) / self.mass
-        self.velocity = acceleration # TODO: ooooops <----------------- units don't match!!!!!!
 
 class SoccerField(object):
 
-    def __init__(self, width: int, height: int):
+    def __init__ (self, name: str):
 
-        self.width, self.height = width, height
-        pygame.display.set_caption('Soccer Field')
-        # where will I show the field:
-        self.surface = pygame.display.set_mode((self.width, self.height), 0, 32)
-        # actual playing field:
-        self.playing_area = Rect(TOP_LEFT, WIDTH_HEIGHT)
+        self.name = name
 
+        # Terreno real de juego.
+        self.playing_area = Rect(Global.TOP_LEFT, Global.WIDTH_HEIGHT)
 
-        # "walls": side lines and lines at the end of the field
-        # Used to detect when ball goes out of bound
-        # TODO
+        # Walls para detectar cuándo el balón sale del terreno de juego.
         self.walls = []
 
+        top_left = Vec2d(self.playing_area.topleft)
+        top_right = Vec2d(self.playing_area.topright)
+        bottom_left = Vec2d(self.playing_area.bottomleft)
+        bottom_right = Vec2d(self.playing_area.bottomright)
 
-    def render(self):
-        """Renders the playing field."""
+        self.walls.append(Wall2d(top_left, top_right))
+        self.walls.append(Wall2d(top_right, bottom_right))
+        self.walls.append(Wall2d(top_left, bottom_left))
+        self.walls.append(Wall2d(bottom_left, bottom_right))
 
-        self.surface.fill(THECOLORS['green'])
-        pygame.draw.rect(self.surface, THECOLORS['white'], self.playing_area, 7)
-        pygame.draw.circle(self.surface, THECOLORS['white'], self.playing_area.center, 10, 5)
-        pygame.draw.circle(self.surface, THECOLORS['white'], self.playing_area.center, 75, 5)
-        pygame.draw.line(self.surface, THECOLORS['white'], self.playing_area.midtop, self.playing_area.midbottom, 5)
+        # Zonas importantes en el campo.
+        self.regions = {}
+        for i in range (0, 7):
+            for j in range (0, 4):
+                id = i * 4 + j
+                rect = Rect(50 + i * 150, 50 + j * 180, 150, 180)
+                self.regions[id] = SoccerRegion(id, rect, self)
 
+        # Balón.
+        self.ball = SoccerBall(pos = Vec2d(self.playing_area.center), size=10, mass=2,
+                               velocity=Vec2d(0, 0), soccer_field=self)
+        # Equipos
+        self.teams = {}
+        self.teams['red'] = SoccerTeam('red', THECOLORS['red'], 4, self)
+        self.teams['blue'] = SoccerTeam('blue', THECOLORS['blue'], 4, self)
 
-if __name__ == "__main__":
-    WIDTH, HEIGHT = 1200, 800
-    FPS = 30
+        # Porterías.
+        self.goals = {}
+        self.goals['red'] = SoccerGoal('red', THECOLORS['red'], self.playing_area.midleft, self)
+        self.goals['blue'] = SoccerGoal('blue', THECOLORS['blue'], self.playing_area.midright, self)
 
-    pygame.init()
-
-    clock = pygame.time.Clock()
-    soccer_field = SoccerField(width=WIDTH, height=HEIGHT)
-
-    while True:
-        tick_time = clock.tick(FPS)
-
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-
-        soccer_field.render()
-
-        pygame.display.update()
+    def update_states(self):
+        self.ball.move()
+        self.teams['red'].move_players()
+        self.teams['blue'].move_players()
