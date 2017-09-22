@@ -1,7 +1,7 @@
 from pygame.color import THECOLORS
 
+from examples.soccer.dynamics.soccer_ball import SoccerBall
 from rendering.base import DrawingObjects, DrawingCircle, Renderable
-from soccer.soccer_ball import SoccerBall
 
 
 class SoccerBallPygameRenderable(Renderable):

@@ -1,15 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from pygame import Rect # TODO: we have to get rid of this
-from pygame.color import THECOLORS # TODO: we have to get rid of this
+from pygame import Rect  # TODO: we have to get rid of this
+from pygame.color import THECOLORS  # TODO: we have to get rid of this
+from examples.soccer.dynamics import Global
+from examples.soccer.dynamics.Wall2d import Wall2d
+from examples.soccer.dynamics.soccer_ball import SoccerBall
+from examples.soccer.dynamics.soccer_goal import SoccerGoal
+from examples.soccer.dynamics.soccer_team import SoccerTeam
 
-from soccer import Global
-from soccer.soccer_ball import SoccerBall
-from soccer.soccer_goal import SoccerGoal
-from soccer.soccer_region import SoccerRegion
-from soccer.soccer_team import SoccerTeam
-from soccer.Wall2d import Wall2d
+from examples.soccer.dynamics.soccer_region import SoccerRegion
 from vector import Vec2d
 
 

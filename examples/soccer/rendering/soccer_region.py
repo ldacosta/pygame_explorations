@@ -1,7 +1,7 @@
 from pygame.color import THECOLORS
 
-from rendering.base import DrawingObjects, DrawingCircle, DrawingRect, Renderable
-from soccer.soccer_region import SoccerRegion
+from examples.soccer.dynamics.soccer_region import SoccerRegion
+from rendering.base import DrawingObjects, DrawingRect, Renderable
 
 
 class SoccerRegionPygameRenderable(Renderable):

@@ -1,11 +1,14 @@
-from pygame.color import THECOLORS
-from rendering.examples.soccer.soccer_goal import SoccerGoalPygameRenderable
-from rendering.examples.soccer.soccer_team import SoccerTeamPygameRenderable
-from rendering.examples.soccer.soccer_ball import SoccerBallPygameRenderable
-from rendering.examples.soccer.soccer_region import SoccerRegionPygameRenderable
-from rendering.base import DrawingObjects, DrawingRect, DrawingCircle, DrawingLine, Renderable
-from soccer.soccer_field import SoccerField
 from functools import reduce
+
+from pygame.color import THECOLORS
+from examples.soccer.rendering.soccer_goal import SoccerGoalPygameRenderable
+from examples.soccer.rendering.soccer_region import SoccerRegionPygameRenderable
+from examples.soccer.rendering.soccer_team import SoccerTeamPygameRenderable
+
+from examples.soccer.dynamics.soccer_field import SoccerField
+from examples.soccer.rendering.soccer_ball import SoccerBallPygameRenderable
+from rendering.base import DrawingObjects, DrawingRect, DrawingCircle, DrawingLine, Renderable
+
 
 class SoccerFieldPygameRenderable(Renderable):
 

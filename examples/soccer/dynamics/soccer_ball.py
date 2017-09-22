@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from vector import Vec2d
 from dynamics.particle import Particle
-from soccer import Global
+from examples.soccer.dynamics import Global
+from vector import Vec2d
+
 
 class SoccerBall (Particle):
 
@@ -19,9 +20,6 @@ class SoccerBall (Particle):
         self.direction = Vec2d(20, 0)
 
     def testCollisionWithWalls (self):
-
-        velNormal = Vec2d(self.velocity)
-        
         # Iterar sobre todos los laterales del campo
         # para calcular si el balón interseca.
         for w in self.walls:

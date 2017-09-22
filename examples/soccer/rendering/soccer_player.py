@@ -1,5 +1,5 @@
+from examples.soccer.dynamics.soccer_player import SoccerPlayer
 from rendering.base import Renderable, DrawingObjects, DrawingCircle, DrawingLine
-from soccer.soccer_player import SoccerPlayer
 
 
 class SoccerPlayerPygameRenderable(Renderable):

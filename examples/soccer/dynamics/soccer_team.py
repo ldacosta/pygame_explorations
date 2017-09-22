@@ -3,8 +3,8 @@
 
 import random
 
+from examples.soccer.dynamics.soccer_player import SoccerPlayer
 from vector import Vec2d
-from soccer.soccer_player import SoccerPlayer
 
 class SoccerTeam(object):
 
