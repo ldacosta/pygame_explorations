@@ -45,7 +45,7 @@ class SoccerField(object):
 
         # Balón.
         self.ball = SoccerBall(pos = Vec2d(self.playing_area.center), size=10, mass=2,
-                               velocity=Vec2d(0, 0), soccer_field=self)
+                               velocity=Vec2d(1, 10), soccer_field=self)
         # Equipos
         self.teams = {}
         self.teams['red'] = SoccerTeam('red', THECOLORS['red'], 4, self)

@@ -6,9 +6,9 @@ import random
 from vector import Vec2d
 from soccer.soccer_player import SoccerPlayer
 
-class SoccerTeam:
+class SoccerTeam(object):
 
-    def __init__ (self, name, colour, num_players, soccer_field):
+    def __init__ (self, name: str, colour, num_players: int, soccer_field):
 
         self.name = name
         self.colour = colour
@@ -19,21 +19,15 @@ class SoccerTeam:
         populated_regions = []
 
         for i in range (0, num_players):
-
             assigned_region = False
-
-            # Para controlar que dos jugadores
-            # no aparezcan en la misma región.
+            # we don't 2 players on same region:
             while (not assigned_region):
-
                 if (name == 'red'):
                     region = random.randint(0, 11)
                 elif (name == 'blue'):
                     region = random.randint(16, 27)
-
                 if not region in populated_regions:
                     assigned_region = True
-
             populated_regions.append(region)
                 
             # La posición inicial es el centro de la región.

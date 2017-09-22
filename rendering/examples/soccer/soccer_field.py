@@ -2,9 +2,10 @@ from pygame.color import THECOLORS
 from rendering.examples.soccer.soccer_goal import SoccerGoalPygameRenderable
 from rendering.examples.soccer.soccer_team import SoccerTeamPygameRenderable
 from rendering.examples.soccer.soccer_ball import SoccerBallPygameRenderable
+from rendering.examples.soccer.soccer_region import SoccerRegionPygameRenderable
 from rendering.base import DrawingObjects, DrawingRect, DrawingCircle, DrawingLine, Renderable
 from soccer.soccer_field import SoccerField
-
+from functools import reduce
 
 class SoccerFieldPygameRenderable(Renderable):
 
@@ -41,6 +42,10 @@ class SoccerFieldPygameRenderable(Renderable):
         goal_2 = SoccerGoalPygameRenderable(soccer_goal=self.field.goals['blue']).representation()
         team_1 = SoccerTeamPygameRenderable(team=self.field.teams['red']).representation()
         team_2 = SoccerTeamPygameRenderable(team=self.field.teams['blue']).representation()
-        return field + ball + goal_1 + goal_2 + team_1 + team_2
+        regions_list = []
+        for key, region in self.field.regions.items():
+            regions_list.append(SoccerRegionPygameRenderable(region).representation())
+        regions = reduce(lambda repr1, repr2: repr1 + repr2, regions_list)
+        return field + ball + goal_1 + goal_2 + team_1 + team_2 + regions
 
 
