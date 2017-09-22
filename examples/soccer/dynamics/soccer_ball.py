@@ -1,9 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from vector import Vec2d
 from dynamics.particle import Particle
-from soccer import Global
+from examples.soccer.dynamics import Global
+from vector import Vec2d
+
 
 class SoccerBall (Particle):
 
@@ -18,15 +19,19 @@ class SoccerBall (Particle):
         self.walls = soccer_field.walls
         self.direction = Vec2d(20, 0)
 
-    def testCollisionWithWalls (self):
 
-        velNormal = Vec2d(self.velocity)
-        
-        # Iterar sobre todos los laterales del campo
-        # para calcular si el balón interseca.
+    def collides_with_walls (self) -> bool:
+        """Checks if ball collides with walls."""
         for w in self.walls:
             if w.dist_to(self.pos) < Global.TOUCHLINE:
-                self.reset(self.pos)
+                return True
+        return False
+
+    def reset_on_wall_collision (self):
+        """Behaviour when it collides with walls."""
+
+        if self.collides_with_walls():
+            self.reset(self.pos)
 
     # Golpea el balón en la dirección dada.
     def kick (self, direction, force):
@@ -39,6 +44,7 @@ class SoccerBall (Particle):
         self.velocity = acceleration
 
     # Devuelve la posición del balón en el futuro.
+    # TODO: this is serious bad-design.
     def futurePosition (self, time):
 
         # u = velocidad de inicio.
@@ -57,18 +63,12 @@ class SoccerBall (Particle):
         return self.pos + ut + scalarToVector
 
     def move (self):
-
+        # handle walls first:
         self.oldPos = self.pos
-
-        # Cálculo de colisiones.
-        self.testCollisionWithWalls()
-
-        # Cómputo de la fricción del campo sobre la bola.
+        self.reset_on_wall_collision()
+        # Friction of field on wall: if ball goes fast enough, everything is updated
         if self.velocity.get_length_sqrd() > Global.FRICTION ** 2:
-            # Se actualiza la velocidad y la posición.
             self.velocity += (self.velocity.normalized() * Global.FRICTION)
             self.pos += self.velocity
-
             self.pos = Vec2d(int(self.pos.x), int(self.pos.y))
-
             self.heading = self.velocity.normalized()

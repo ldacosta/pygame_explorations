@@ -1,5 +1,5 @@
+from examples.soccer.dynamics.soccer_goal import SoccerGoal
 from rendering.base import DrawingObjects, DrawingLine, Renderable
-from soccer.soccer_goal import SoccerGoal
 
 
 class SoccerGoalPygameRenderable(Renderable):

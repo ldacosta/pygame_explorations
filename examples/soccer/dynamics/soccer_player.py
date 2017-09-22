@@ -1,14 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import pygame, random
-
 from dynamics.particle import Particle
-from soccer.SteeringBehaviours import *
-from soccer import Global
 from vector import Vec2d
+from examples.soccer.dynamics.SteeringBehaviours import SteeringBehaviours
 
-# El jugador es una entidad móvil.
 class SoccerPlayer (Particle):
 
     def __init__ (self, team, colour, number, pos, soccer_field):

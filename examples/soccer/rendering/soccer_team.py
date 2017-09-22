@@ -1,8 +1,8 @@
 from functools import reduce
 
+from examples.soccer.dynamics.soccer_team import SoccerTeam
+from examples.soccer.rendering.soccer_player import SoccerPlayerPygameRenderable
 from rendering.base import Renderable, DrawingObjects
-from rendering.examples.soccer.soccer_player import SoccerPlayerPygameRenderable
-from soccer.soccer_team import SoccerTeam
 
 
 class SoccerTeamPygameRenderable(Renderable):
