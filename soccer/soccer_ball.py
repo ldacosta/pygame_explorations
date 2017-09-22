@@ -1,16 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from typing import List
-import pygame
-from pygame.color import THECOLORS
-
-from soccer import Wall2d
 from vector import Vec2d
-from dynamics.entity import Particle
+from dynamics.particle import Particle
 from soccer import Global
 
-# El balón es una entidad móvil.
 class SoccerBall (Particle):
 
     def __init__(self, pos: Vec2d, size: float, mass: float, velocity: Vec2d, soccer_field):
@@ -21,8 +15,8 @@ class SoccerBall (Particle):
         self.oldPos = pos
         
         self.soccer_field = soccer_field
-        self.walls: List[Wall2d] = soccer_field.walls
-        self.direction = Vec2d(0, 0)
+        self.walls = soccer_field.walls
+        self.direction = Vec2d(20, 0)
 
     def testCollisionWithWalls (self):
 
@@ -78,11 +72,3 @@ class SoccerBall (Particle):
             self.pos = Vec2d(int(self.pos.x), int(self.pos.y))
 
             self.heading = self.velocity.normalized()
-
-    def render (self):
-
-        # En cada instante de render se actualiza el estado del balón.
-        self.move()
-
-        pygame.draw.circle(self.soccer_field.surface, THECOLORS['black'], 
-                           self.pos, self.radius, 0)
