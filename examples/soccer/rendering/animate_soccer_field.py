@@ -3,7 +3,7 @@ from pygame.color import THECOLORS
 
 from examples.soccer.dynamics.soccer_field import SoccerField
 from examples.soccer.rendering.soccer_field import SoccerFieldPygameRenderable
-from rendering.base import pygame_render
+from rendering.pygame.base import pygame_render
 
 if __name__ == "__main__":
     import sys

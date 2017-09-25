@@ -1,14 +1,12 @@
 from functools import reduce
 
-from pygame.color import THECOLORS
+from examples.soccer.dynamics.soccer_field import SoccerField
+from examples.soccer.rendering.soccer_ball import SoccerBallPygameRenderable
 from examples.soccer.rendering.soccer_goal import SoccerGoalPygameRenderable
 from examples.soccer.rendering.soccer_region import SoccerRegionPygameRenderable
 from examples.soccer.rendering.soccer_team import SoccerTeamPygameRenderable
-
-from examples.soccer.dynamics.soccer_field import SoccerField
-from examples.soccer.rendering.soccer_ball import SoccerBallPygameRenderable
-from rendering.base import DrawingObjects, DrawingRect, DrawingCircle, DrawingLine, Renderable
-
+from rendering.pygame.base import DrawingObjects, DrawingRect, DrawingCircle, DrawingLine, Renderable
+from rendering.base import Color
 
 class SoccerFieldPygameRenderable(Renderable):
 
@@ -19,26 +17,25 @@ class SoccerFieldPygameRenderable(Renderable):
     def representation(self) -> DrawingObjects:
         field = DrawingObjects(
             rects=[
-                DrawingRect(
-                    shape=self.field.playing_area,
-                    color=THECOLORS['white'],
+                DrawingRect(top=self.field.playing_area.top,left=self.field.playing_area.left,width=self.field.playing_area.width,height=self.field.playing_area.height,
+                    color=Color.WHITE,
                     lines_thickness=3)],
             circles=[
                 DrawingCircle(
-                    center=self.field.playing_area.center,
+                    center=self.field.playing_area.center.as_tuple(),
                     radius=10,
-                    color=THECOLORS['white'],
+                    color=Color.WHITE,
                     line_thickness=2),
                 DrawingCircle(
-                    center=self.field.playing_area.center,
+                    center=self.field.playing_area.center.as_tuple(),
                     radius=75,
-                    color=THECOLORS['white'],
+                    color=Color.WHITE,
                     line_thickness=2)],
             lines=[
                 DrawingLine(
-                    begin=self.field.playing_area.midtop,
-                    end=self.field.playing_area.midbottom,
-                    color=THECOLORS['white'],
+                    begin=self.field.playing_area.midtop.as_tuple(),
+                    end=self.field.playing_area.midbottom.as_tuple(),
+                    color=Color.WHITE,
                     thickness=2)])
         ball = SoccerBallPygameRenderable(soccer_ball=self.field.ball).representation()
         goal_1 = SoccerGoalPygameRenderable(soccer_goal=self.field.goals['red']).representation()

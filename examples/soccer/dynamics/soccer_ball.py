@@ -1,40 +1,45 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""Dynamics of a Soccer Team.
+
+TODO:
+
+"""
 
 from dynamics.particle import Particle
 from examples.soccer.dynamics import Global
 from vector import Vec2d
+from point import Point
 
 
-class SoccerBall (Particle):
+class SoccerBall(Particle):
 
-    def __init__(self, pos: Vec2d, size: float, mass: float, velocity: Vec2d, soccer_field):
+    def __init__(self, pos: Point, size: float, mass: float, velocity: Vec2d, soccer_field):
 
-        super().__init__(pos, size, velocity, velocity,
-                              Vec2d(soccer_field.playing_area.center), mass)
+        super().__init__(pos, size, velocity, velocity, Vec2d(soccer_field.playing_area.center), mass)
 
-        self.oldPos = pos
-        
+        self.old_pos = pos
+
         self.soccer_field = soccer_field
         self.walls = soccer_field.walls
         self.direction = Vec2d(20, 0)
 
 
-    def collides_with_walls (self) -> bool:
+    def collides_with_walls(self) -> bool:
         """Checks if ball collides with walls."""
-        for w in self.walls:
-            if w.dist_to(self.pos) < Global.TOUCHLINE:
+        for a_wall in self.walls:
+            if a_wall.dist_to(self.pos) < Global.TOUCHLINE:
                 return True
         return False
 
-    def reset_on_wall_collision (self):
+    def reset_on_wall_collision(self):
         """Behaviour when it collides with walls."""
 
         if self.collides_with_walls():
             self.reset(self.pos)
 
-    # Golpea el balón en la dirección dada.
-    def kick (self, direction, force):
+    def kick(self, direction: Vec2d, force: Vec2d):
+        """Kick of a ball on a certain direction."""
         
         # Normaliza la dirección.
         direction = direction.normalized()
@@ -45,7 +50,7 @@ class SoccerBall (Particle):
 
     # Devuelve la posición del balón en el futuro.
     # TODO: this is serious bad-design.
-    def futurePosition (self, time):
+    def futurePosition(self, time):
 
         # u = velocidad de inicio.
         # Cálculo del vector ut.
@@ -56,19 +61,18 @@ class SoccerBall (Particle):
 
         # Conversión del escalar a vector,
         # considerando la velocidad (dirección) de la bola.
-        scalarToVector = half_a_t_squared * self.velocity.normalized()
+        scalar_2_vector = half_a_t_squared * self.velocity.normalized()
 
         # La posición predicha es la actual
         # más la suma de los dos términos anteriores.
-        return self.pos + ut + scalarToVector
+        return self.pos + ut + scalar_2_vector
 
-    def move (self):
+    def move(self):
         # handle walls first:
-        self.oldPos = self.pos
+        self.old_pos = self.pos
         self.reset_on_wall_collision()
         # Friction of field on wall: if ball goes fast enough, everything is updated
         if self.velocity.get_length_sqrd() > Global.FRICTION ** 2:
             self.velocity += (self.velocity.normalized() * Global.FRICTION)
-            self.pos += self.velocity
-            self.pos = Vec2d(int(self.pos.x), int(self.pos.y))
+            self.pos += Point(x=self.velocity.x, y=self.velocity.y)
             self.heading = self.velocity.normalized()

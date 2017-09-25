@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from vector import Vec2d
+from point import Point
 
 class Wall2d:
 
@@ -16,7 +17,7 @@ class Wall2d:
         aux = aux.normalized()
         self.normal = aux.perpendicular_normal()
 
-    def dist_to(self, p: Vec2d) -> float:
+    def dist_to(self, p: Point) -> float:
         dotA = (p.x - self.a.x) * (self.b.x - self.a.x) + (p.y - self.a.y) * (self.b.y - self.a.y)
 
         if dotA <= 0:
@@ -29,4 +30,4 @@ class Wall2d:
 
         closest_point = self.a + ((self.b - self.a) * dotA) / (dotA + dotB)
 
-        return p.get_distance(closest_point)
+        return p.distance_to(closest_point)

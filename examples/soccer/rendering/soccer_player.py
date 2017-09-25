@@ -1,5 +1,5 @@
 from examples.soccer.dynamics.soccer_player import SoccerPlayer
-from rendering.base import Renderable, DrawingObjects, DrawingCircle, DrawingLine
+from rendering.pygame.base import Renderable, DrawingObjects, DrawingCircle, DrawingLine
 
 
 class SoccerPlayerPygameRenderable(Renderable):
@@ -13,13 +13,13 @@ class SoccerPlayerPygameRenderable(Renderable):
             rects=[],
             circles=[ # actual position
                 DrawingCircle(
-                    center=self.player.pos,
+                    center=self.player.pos.as_tuple(),
                     radius=self.player.radius,
                     color=self.player.colour,
                     line_thickness=0)],
             lines=[ # direction
                 DrawingLine(
-                    begin=self.player.pos,
-                    end=self.player.pos + ((self.player.radius * 2) * self.player.direction),
+                    begin=self.player.pos.as_tuple(),
+                    end=self.player.pos.translate_following(((self.player.radius * 2) * self.player.direction)).as_tuple(),
                     color=self.player.colour,
                     thickness=6)])
