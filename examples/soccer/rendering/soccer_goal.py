@@ -1,5 +1,5 @@
 from examples.soccer.dynamics.soccer_goal import SoccerGoal
-from rendering.base import DrawingObjects, DrawingLine, Renderable
+from rendering.pygame.base import DrawingObjects, DrawingLine, Renderable
 
 
 class SoccerGoalPygameRenderable(Renderable):
@@ -12,8 +12,9 @@ class SoccerGoalPygameRenderable(Renderable):
         return DrawingObjects(
             rects=[],
             circles=[],
-            lines=[DrawingLine(
-                begin=self.goal.leftPost,
-                end=self.goal.rightPost,
+            lines=[
+                DrawingLine(
+                begin=self.goal.left_post.as_tuple(),
+                end=self.goal.right_post.as_tuple(),
                 color=self.goal.colour,
                 thickness=6)])

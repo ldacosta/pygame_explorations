@@ -1,15 +1,22 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""Dynamics of a Soccer Team.
+
+TODO:
+
+"""
 
 import random
+from dynamics.entity import Container
+from rendering.base import Color
 
 from examples.soccer.dynamics.soccer_player import SoccerPlayer
-from vector import Vec2d
 
-class SoccerTeam(object):
+class SoccerTeam(Container):
+    "Soccer Team."
 
-    def __init__ (self, name: str, colour, num_players: int, soccer_field):
-
+    def __init__(self, name: str, colour: Color, num_players: int, soccer_field):
+        super().__init__()
         self.name = name
         self.colour = colour
         self.players = []
@@ -18,24 +25,27 @@ class SoccerTeam(object):
         random.seed()
         populated_regions = []
 
-        for i in range (0, num_players):
+        for i in range(0, num_players):
             assigned_region = False
             # we don't 2 players on same region:
-            while (not assigned_region):
-                if (name == 'red'):
+            while not assigned_region:
+                if name == 'red':
                     region = random.randint(0, 11)
-                elif (name == 'blue'):
+                elif name == 'blue':
                     region = random.randint(16, 27)
                 if not region in populated_regions:
                     assigned_region = True
             populated_regions.append(region)
-                
-            # La posición inicial es el centro de la región.
-            pos = Vec2d(soccer_field.regions[region].rect.center)
 
-            # Nuevo jugador.
+            # Player's center position is the center of the rectangle:
+            pos = soccer_field.regions[region].rect.center
             self.players.append(SoccerPlayer(name, colour, i, pos, soccer_field))
 
     def move_players(self):
+        """Calls all players to move."""
+
         for player in self.players:
             player.move()
+
+    def update_states(self):
+        self.move_players()

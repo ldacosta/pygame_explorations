@@ -1,8 +1,6 @@
-from pygame.color import THECOLORS
-
 from examples.soccer.dynamics.soccer_region import SoccerRegion
-from rendering.base import DrawingObjects, DrawingRect, Renderable
-
+from rendering.pygame.base import DrawingObjects, DrawingRect, Renderable
+from rendering.base import Color
 
 class SoccerRegionPygameRenderable(Renderable):
 
@@ -13,7 +11,13 @@ class SoccerRegionPygameRenderable(Renderable):
     def representation(self) -> DrawingObjects:
         return DrawingObjects(
             rects=[
-                DrawingRect(shape=self.region.rect, color=THECOLORS['white'], lines_thickness=1)
+                DrawingRect(
+                    top=self.region.rect.top,
+                    left=self.region.rect.left,
+                    width=self.region.rect.width,
+                    height=self.region.rect.height,
+                    color=Color.WHITE,
+                    lines_thickness=1)
             ],
             circles=[],
             lines=[])

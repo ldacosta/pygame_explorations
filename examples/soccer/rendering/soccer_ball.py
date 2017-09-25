@@ -1,7 +1,6 @@
-from pygame.color import THECOLORS
-
 from examples.soccer.dynamics.soccer_ball import SoccerBall
-from rendering.base import DrawingObjects, DrawingCircle, Renderable
+from rendering.base import Color
+from rendering.pygame.base import DrawingObjects, DrawingCircle, Renderable
 
 
 class SoccerBallPygameRenderable(Renderable):
@@ -15,8 +14,8 @@ class SoccerBallPygameRenderable(Renderable):
             rects=[],
             circles=[
                 DrawingCircle(
-                    center=self.ball.pos,
+                    center=self.ball.pos.as_tuple(),
                     radius=self.ball.radius,
-                    color=THECOLORS['black'],
+                    color=Color.BLACK,
                     line_thickness=2)],
             lines=[])

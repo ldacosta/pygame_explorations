@@ -1,11 +1,17 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""Soccer Goal Definition.
 
-from vector import Vec2d
+TODO:
+
+"""
+
+from point import Point
+from rendering.base import Color
 
 class SoccerGoal:
 
-    def __init__ (self, team, colour, position, soccer_field):
+    def __init__(self, team, colour: Color, position: Point, soccer_field):
 
         self.team = team
         self.colour = colour
@@ -13,6 +19,5 @@ class SoccerGoal:
 
         aux = self.soccer_field.playing_area.height / 6
 
-        # Pósters izquierdo y derecho.
-        self.leftPost = Vec2d(position - Vec2d(0, aux))
-        self.rightPost = Vec2d(position + Vec2d(0, aux))
+        self.left_post = position - Point(0, aux)
+        self.right_post = position + Point(0, aux)

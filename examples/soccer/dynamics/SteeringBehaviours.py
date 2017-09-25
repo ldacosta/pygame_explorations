@@ -1,95 +1,103 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+"""Steering Behaviours.
+
+TODO:
+
+"""
+
+from vector import Vec2d
+from point import Point
 
 # Deceleration factors.
 SLOW = 3
 NORMAL = 2
 FAST = 1
 
-from vector import Vec2d
-
 class SteeringBehaviours:
+    """Steering Behaviours."""
 
-    def __init__ (self, player, ball):
+    def __init__(self, player, ball):
 
         self.player = player
         self.ball = ball
 
-        self.target = Vec2d(ball.pos)
+        self.target = ball.pos
 
-        # Comportamientos activados.
+        # Behaviours dictionary (key: behaviour name, value: is it activated?)
         self.activated = {}
         self.activated['seek'] = False
         self.activated['pursuit'] = False
         self.activated['arrive'] = False
+        #
+        self.steering_force = self.sum_forces()
 
-    def calculate (self):
+    def calculate(self) -> Vec2d:
+        """Updates steering force."""
+        self.steering_force = self.sum_forces()
+        return self.steering_force
 
-        steeringForce = self.sumForces()
-        return steeringForce
+    def sum_forces(self) -> Vec2d:
 
-    def sumForces (self):
-        
         force = Vec2d(0, 0)
-
         if self.activated['seek']:
             force += self.seek(self.target)
         if self.activated['pursuit']:
             force += self.pursuit(self.target)
         if self.activated['arrive']:
             force += self.arrive(self.target)
-
         return force
 
-    def truncate (self, max_force):
-        
-        if self.steeringForce > max_force:
-            self.steeringForce = max_force
+    def truncate(self, max_force):
+        """Truncates steering force."""
+        if self.steering_force > max_force:
+            self.steering_force = max_force
 
-    # Dado un objetivo, este comportamiento devuelve la fuerza
-    # que orienta al jugador hacia el objetivo y lo mueve.
-    def seek (self, target):
+    def seek(self, target: Point) -> Vec2d:
+        """
+        Dado un objetivo, este comportamiento devuelve la fuerza
+        que orienta al jugador hacia el objetivo y lo mueve.
+        :param target: Where am I going to.
+        :return: The force vector towards it.
+        """
 
-        desiredVelocity = (target - self.player.pos).normalized()
-        desiredVelocity *= self.player.max_speed
+        desired_velocity = (target - self.player.pos).normalized()
+        desired_velocity *= self.player.max_speed
 
-        return (desiredVelocity - self.player.velocity)
+        return (desired_velocity - self.player.velocity)
 
-    # Similar a seek pero llegando con velocidad nula.
-    def arrive (self, target, deceleration = FAST):
+    def arrive(self, target: Point, deceleration=FAST) -> Vec2d:
+        """Similar a seek pero llegando con velocidad nula."""
 
-        toTarget = target - self.player.pos
+        to_target = Vec2d.origin_to(target - self.player.pos)
+        # distance to target
+        dist = to_target.get_length()
 
-        # Distancia al target.
-        dist = toTarget.get_length()
-        
-        if (dist > 25):
+        if dist > 25:
             # Para ajustar la deceleración...
             decelerationTweaker = 3
             # Cálculo de la velocidad requerida.
-            speed = dist / (deceleration * decelerationTweaker)
+            speed = min(dist / (deceleration * decelerationTweaker), self.player.max_speed.get_length())
+            # velocity:
+            desired_velocity = to_target * speed / dist # Vec2d(to_target * speed / dist)
 
-            speed = min(speed, self.player.max_speed.get_length())
+            ## FIX THIS TYPE :::
 
-            # Igual que seek...
-            desiredVelocity = toTarget * speed / dist
+            return desired_velocity - self.player.velocity
+        else:
+            return Vec2d(0, 0)
 
-            return desiredVelocity - self.player.velocity
-
-        return Vec2d(0, 0)
-
-    # Crea una fuerza que mueve al jugador hacia la bola.
-    def pursuit (self, target):
+    def pursuit(self, target) -> Vec2d:
+        """Crea una fuerza que mueve al jugador hacia la bola."""
 
         toBall = self.ball.pos - self.player.pos
         self.direction = toBall.normalized()
-        lookAheadTime = 0.0
+        look_ahead_time = 0.0
 
         if self.ball.velocity.get_length() != 0.0:
-            lookAheadTime = toBall.get_length() / self.ball.velocity.get_length()
+            look_ahead_time = toBall.get_length() / self.ball.velocity.get_length()
 
         # ¿Dónde estará la bola en el futuro?
-        target = self.ball.futurePosition(lookAheadTime)
+        target = self.ball.futurePosition(look_ahead_time)
 
         return self.arrive(target)
-        
