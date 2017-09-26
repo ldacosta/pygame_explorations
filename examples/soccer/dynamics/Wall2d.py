@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from vector import Vec2d
-from point import Point
+from geometry.vector import Vec2d
+from geometry.point import Point
 
 class Wall2d:
 

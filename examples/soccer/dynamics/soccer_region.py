@@ -6,7 +6,7 @@ TODO:
 
 """
 
-from shapes import Rect
+from geometry.shapes import Rect
 
 class SoccerRegion:
     """Region on a Soccer Field."""

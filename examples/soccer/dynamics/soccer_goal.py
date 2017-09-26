@@ -6,7 +6,7 @@ TODO:
 
 """
 
-from point import Point
+from geometry.point import Point
 from rendering.base import Color
 
 class SoccerGoal:

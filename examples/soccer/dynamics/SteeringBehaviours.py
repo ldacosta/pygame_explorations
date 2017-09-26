@@ -6,8 +6,8 @@ TODO:
 
 """
 
-from vector import Vec2d
-from point import Point
+from geometry.vector import Vec2d
+from geometry.point import Point
 
 # Deceleration factors.
 SLOW = 3

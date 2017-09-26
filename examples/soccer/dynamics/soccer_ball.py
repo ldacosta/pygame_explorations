@@ -8,8 +8,8 @@ TODO:
 
 from dynamics.particle import Particle
 from examples.soccer.dynamics import Global
-from vector import Vec2d
-from point import Point
+from geometry.vector import Vec2d
+from geometry.point import Point
 
 
 class SoccerBall(Particle):

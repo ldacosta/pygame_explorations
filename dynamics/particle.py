@@ -6,8 +6,8 @@ TODO:
 """
 
 from dynamics.entity import MovingEntity
-from vector import Vec2d
-from point import Point
+from geometry.vector import Vec2d
+from geometry.point import Point
 
 
 class Particle(MovingEntity): # pylint: disable=too-few-public-methods
