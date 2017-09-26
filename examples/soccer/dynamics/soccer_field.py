@@ -7,11 +7,11 @@ TODO:
 """
 
 from dynamics.entity import Container
-from coordinates import CoordinatesDirection
+from geometry.coordinates import CoordinatesDirection
 from rendering.base import Color
 # from pygame.color import THECOLORS  # TODO: we have to get rid of this
-from shapes import Rect
-from point import Point as OurPoint
+from geometry.shapes import Rect
+from geometry.point import Point as OurPoint
 from examples.soccer.dynamics import Global
 from examples.soccer.dynamics.Wall2d import Wall2d
 from examples.soccer.dynamics.soccer_ball import SoccerBall
@@ -19,7 +19,7 @@ from examples.soccer.dynamics.soccer_goal import SoccerGoal
 from examples.soccer.dynamics.soccer_team import SoccerTeam
 
 from examples.soccer.dynamics.soccer_region import SoccerRegion
-from vector import Vec2d
+from geometry.vector import Vec2d
 
 
 class SoccerField(Container):

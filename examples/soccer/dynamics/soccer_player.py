@@ -7,9 +7,9 @@ TODO:
 """
 
 from dynamics.particle import Particle
-from vector import Vec2d
+from geometry.vector import Vec2d
 from examples.soccer.dynamics.SteeringBehaviours import SteeringBehaviours
-from point import Point
+from geometry.point import Point
 from rendering.base import Color
 
 class SoccerPlayer(Particle):

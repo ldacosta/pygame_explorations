@@ -9,8 +9,8 @@ TODO:
 
 import abc
 
-from vector import Vec2d
-from point import Point
+from geometry.vector import Vec2d
+from geometry.point import Point
 
 
 class Entity(object): # pylint: disable=too-few-public-methods
